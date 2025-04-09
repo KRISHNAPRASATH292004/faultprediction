@@ -1,0 +1,102 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  margin: 0;
+  padding: 1rem;
+}
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 1rem;
+}
+h2 {
+  text-align: center;
+  color: #2c3e50;
+}
+#alertBox {
+  background-color: #ffdddd;
+  color: #d8000c;
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid red;
+  border-radius: 5px;
+  font-weight: bold;
+  display: none;
+  margin-bottom: 1rem;
+}
+table {
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+th {
+  background: #f2f2f2;
+}
+.fail {
+  background-color: #ffe6e6;
+  color: #d00000;
+  font-weight: bold;
+}
+.success {
+  background-color: #e6ffed;
+  color: #007a33;
+  font-weight: bold;
+}
+.risk-low { color: green; }
+.risk-medium { color: orange; }
+.risk-high { color: red; font-weight: bold; }
+#status {
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #555;
+  text-align: center;
+}
+button {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 20px auto;
+  padding: 10px;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background: #1a252f;
+}
+@media (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  th {
+    position: sticky;
+    top: 0;
+    background: #f2f2f2;
+  }
+  td {
+    border: none;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+  }
+  td::before {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: bold;
+  }
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Live Machine Monitoring</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h2>Live Machine Fault Detection</h2>
+
+  <div id="alertBox"></div>
+  <div id="status">Click below to start monitoring</div>
+  <button onclick="startMonitoring()">Start Live Monitoring</button>
+
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>Footfall</th><th>TempMode</th><th>AQ</th><th>USS</th><th>CS</th><th>VOC</th><th>RP</th><th>IP</th><th>Temperature</th>
+        <th>Prediction</th><th>Probability</th><th>Risk Level</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button onclick="downloadFaults()">📥 Download Fault Log</button>
+
+  <!-- Sound alert -->
+  <audio id="alertSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
+
+  <script src="script.js">
+  </script>
+
+</body>
+</html>
