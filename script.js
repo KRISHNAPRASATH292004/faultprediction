@@ -103,7 +103,7 @@ async function startMonitoring() {
 
       const row = document.createElement("tr");
 
-      // Display values in the correct order
+      // 🔄 Display values in exact order with fixed decimals
       orderedKeys.forEach(key => {
         const td = document.createElement("td");
         td.textContent = (key === "CS" || key === "Temperature")
@@ -126,31 +126,23 @@ async function startMonitoring() {
       riskTd.className = risk.class;
       row.appendChild(riskTd);
 
-      const reasonTd = document.createElement("td");
-      reasonTd.textContent = violations.length > 0 ? violations.join(", ") : "Model prediction";
-      row.appendChild(reasonTd);
-
       tableBody.appendChild(row);
 
       if (result.prediction === 1 || violations.length > 0) {
         playAlertSound();
-
-        await logFaultToBackend({
-          ...data,
-          reason: violations.length > 0 ? violations.join(", ") : "Model predicted failure"
-        });
+        await logFaultToBackend(data);
 
         monitoring = false;
         const faultMessage = violations.length > 0
-          ? `⚠️ Fault due to threshold violation in: <strong>${violations.join(", ")}</strong>`
-          : "⚠️ Fault detected by model prediction with high confidence.";
+          ? `Fault detected due to: ${violations.join(", ")}`
+          : "Model predicted failure with high confidence.";
 
         showAlert(faultMessage);
         status.innerText = "❗ Fault detected! Monitoring paused.";
         break;
       }
 
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000)); // 2s delay
 
     } catch (err) {
       console.error(err);
