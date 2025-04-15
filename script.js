@@ -23,7 +23,7 @@ function checkViolations(data) {
   const problems = [];
   for (const key in thresholds) {
     if (data[key] > thresholds[key]) {
-      problems.push(`${key}`);
+      problems.push(`${key} (${data[key]})`);
     }
   }
   return problems;
@@ -77,9 +77,6 @@ async function startMonitoring() {
   if (monitoring) return;
   monitoring = true;
 
-  // ❌ Hide fault alert on start
-  document.getElementById("alertBox").style.display = "none";
-
   const status = document.getElementById("status");
   const tableBody = document.querySelector("#dataTable tbody");
   status.innerText = "🔄 Monitoring started...";
@@ -106,7 +103,7 @@ async function startMonitoring() {
 
       const row = document.createElement("tr");
 
-      // ✅ Ordered row
+      // 🔄 Display values in exact order with fixed decimals
       orderedKeys.forEach(key => {
         const td = document.createElement("td");
         td.textContent = (key === "CS" || key === "Temperature")
@@ -133,7 +130,6 @@ async function startMonitoring() {
 
       if (result.prediction === 1 || violations.length > 0) {
         playAlertSound();
-        data["fault_reason"] = violations.length > 0 ? violations.join(", ") : "Model predicted failure";
         await logFaultToBackend(data);
 
         monitoring = false;
@@ -146,7 +142,7 @@ async function startMonitoring() {
         break;
       }
 
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Delay between readings
+      await new Promise(resolve => setTimeout(resolve, 2000)); // 2s delay
 
     } catch (err) {
       console.error(err);
