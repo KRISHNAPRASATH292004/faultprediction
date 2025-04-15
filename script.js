@@ -1,4 +1,4 @@
-const BASE_URL = "https://machine-failure-prediction-zf1k.onrender.com";
+const BASE_URL = "http://127.0.0.1:5000"; // Use localhost during local testing
 let monitoring = false;
 
 const thresholds = {
@@ -19,14 +19,22 @@ function getRiskClass(prob) {
   return { label: "Low Risk", class: "risk-low" };
 }
 
+// ✅ Return only the most responsible violation
 function checkViolations(data) {
-  const problems = [];
+  let maxViolation = null;
+  let maxRatio = 0;
+
   for (const key in thresholds) {
     if (data[key] > thresholds[key]) {
-      problems.push(`${key} (${data[key]})`);
+      const ratio = data[key] / thresholds[key];
+      if (ratio > maxRatio) {
+        maxRatio = ratio;
+        maxViolation = `${key} (${data[key]})`;
+      }
     }
   }
-  return problems;
+
+  return maxViolation ? [maxViolation] : [];
 }
 
 function playAlertSound() {
@@ -128,13 +136,14 @@ async function startMonitoring() {
 
       tableBody.appendChild(row);
 
+      // ✅ Fault condition
       if (result.prediction === 1 || violations.length > 0) {
         playAlertSound();
         await logFaultToBackend(data);
 
         monitoring = false;
         const faultMessage = violations.length > 0
-          ? `Fault detected due to: ${violations.join(", ")}`
+          ? `Fault detected due to: ${violations[0]}`
           : "Model predicted failure with high confidence.";
 
         showAlert(faultMessage);
